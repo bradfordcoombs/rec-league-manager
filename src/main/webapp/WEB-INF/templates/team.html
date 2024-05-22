@@ -1,6 +1,15 @@
-<html>
-	<title>Team</title>
-	<body>
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<title th:text="${player.firstName} ${player.lastName}">Player</title>
+<body>
+	<div th:if="${canEdit}">
+		<form>
 		
-	</body>
+		</form>
+	</div>
+	<div th:if="${!canEdit">
+		
+	</div>
+</body>
 </html>

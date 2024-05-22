@@ -1,6 +1,9 @@
 package dev.bc.sas.web;
 
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -11,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import dev.bc.sas.domain.Team;
 import dev.bc.sas.domain.TeamService;
+import dev.bc.sas.security.PermissionUtil;
+import dev.bc.sas.security.Role;
 import jakarta.validation.Valid;
 
 @Controller
@@ -32,9 +37,13 @@ class TeamController {
 
 	@GetMapping("/${teamId}")
 	@PreAuthorize("hasPermission(#teamId, 'team', 'read')")
-	String team(@PathVariable Long teamId, Model model) {
+	String team(@AuthenticationPrincipal Authentication authentication, @PathVariable Long teamId,
+			Model model) {
 		var team = teamService.getTeam(teamId).get();
+		var login = (UserDetails) authentication.getPrincipal();
+		var role = PermissionUtil.getRole(login);
 		model.addAttribute("team", team);
+		model.addAttribute("canEdit", role == Role.DIRECTOR);
 		return "team";
 	}
 
