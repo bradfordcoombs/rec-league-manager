@@ -28,6 +28,23 @@ This database will be reset every time the application is started.
 ## Security
 The app is configured with 2 users, one with each of the following roles: a DIRECTOR and a PLAYER.
 
+- director@test.com
+- player@test.com
+
+Passwords can be configured with environment variables
+
+```
+bc.security.director.password=
+bc.security.player.password=
+```
+
+These have default values if not provided:
+
+```
+bc.security.director.password=director123
+bc.security.player.password=player123
+```
+
 Permissions are based on role and and assignment.
 
 - DIRECTOR users are considered admins with access to all operations.
