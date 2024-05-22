@@ -16,6 +16,8 @@ import jakarta.validation.Payload;
 public @interface PlayerId {
 	String message() default "Invalid player ID";
 
+	boolean nullable() default false;
+
 	Class<?>[] groups() default {};
 
 	Class<? extends Payload>[] payload() default {};

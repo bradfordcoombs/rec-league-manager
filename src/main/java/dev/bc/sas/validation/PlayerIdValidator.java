@@ -10,14 +10,20 @@ import jakarta.validation.ConstraintValidatorContext;
 public class PlayerIdValidator implements ConstraintValidator<PlayerId, Long> {
 
 	private final PlayerService playerService;
+	private boolean nullable;
 
 	public PlayerIdValidator(PlayerService playerService) {
 		this.playerService = playerService;
 	}
 
 	@Override
+	public void initialize(PlayerId annotation) {
+		this.nullable = annotation.nullable();
+	}
+
+	@Override
 	public boolean isValid(Long value, ConstraintValidatorContext context) {
-		return playerService.getPlayer(value).isPresent();
+		return (value == null && this.nullable) || playerService.getPlayer(value).isPresent();
 	}
 
 }

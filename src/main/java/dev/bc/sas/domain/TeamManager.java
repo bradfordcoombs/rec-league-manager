@@ -25,18 +25,8 @@ class TeamManager implements TeamService {
 	}
 
 	@Override
-	public Team createTeam(String name) {
-		return teamRepository.save(new Team(null, name));
-	}
-
-	@Override
-	public Team updateTeam(Team team) {
+	public Team saveTeam(Team team) {
 		return teamRepository.save(team);
 	}
 
-	@Override
-	public Optional<Team> getTeamForCoach(Long coachId) {
-		// TODO Auto-generated method stub
-		return Optional.empty();
-	}
 }

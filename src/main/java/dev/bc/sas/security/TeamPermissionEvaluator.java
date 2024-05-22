@@ -3,47 +3,55 @@ package dev.bc.sas.security;
 import java.io.Serializable;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import dev.bc.sas.domain.TeamService;
+import dev.bc.sas.domain.PlayerService;
+import dev.bc.sas.domain.Team;
 
 @Component
 class TeamPermissionEvaluator implements EntityPermissionEvaluator {
 
-	private final TeamService teamService;
+	private final PlayerService playerService;
 
-	TeamPermissionEvaluator(TeamService teamService) {
-		this.teamService = teamService;
+	TeamPermissionEvaluator(PlayerService playerService) {
+		this.playerService = playerService;
 	}
 
 	@Override
 	public boolean hasPermission(Authentication authentication, Object targetDomainObject, Object permission) {
-		var principal = (Login) authentication.getPrincipal();
-		if (principal.isDirector())
-			return true;
-		if (PermissionUtil.isWritePermission(permission))
-			return false;
-
-		return false;
+		var team = (Team) targetDomainObject;
+		return hasPermission(authentication, team.getId(), permission);
 	}
 
 	@Override
 	public boolean hasPermission(Authentication authentication, Serializable targetId, String targetType,
 			Object permission) {
-		var login = (Login) authentication.getPrincipal();
-		if (login.isDirector())
-			return true;
-		if (PermissionUtil.isWritePermission(permission))
-			return false;
+		var teamId = targetId == null ? null : Long.valueOf(targetId.toString());
+		return hasPermission(authentication, teamId, permission);
 
-		return switch (login.role()) {
-		case DIRECTOR -> true;
-		case COACH -> teamService.getTeamForCoach(login.id()).isPresent();
-		case PLAYER -> throw new UnsupportedOperationException("Unimplemented case: " + login.role());
-		default -> throw new IllegalArgumentException("Unexpected value: " + login.role());
+	}
+
+	private boolean hasPermission(Authentication authentication, Long teamId, Object permission) {
+		var login = (UserDetails) authentication.getPrincipal();
+		var role = PermissionUtil.getRole(login);
+
+		return switch (permission.toString()) {
+		case "write" -> role == Role.DIRECTOR;
+		case "read" -> role == Role.DIRECTOR || hasReadPermission(login, teamId);
+		default -> throw new IllegalArgumentException("Unexpected value: " + permission.toString());
 		};
 	}
 
+	private boolean hasReadPermission(UserDetails user, Long teamId) {
+		if (teamId == null) {
+			return false;
+		}
+		var playerOptional = playerService.getPlayerByEmail(user.getUsername());
+		return playerOptional.filter(player -> (player.getTeam() == null && teamId == null)
+				|| (player.getTeam() != null && player.getTeam().getId() == teamId)).isPresent();
+
+	}
 
 	@Override
 	public String entitySimpleClassName() {

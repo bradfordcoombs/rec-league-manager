@@ -9,21 +9,29 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-record Player(
+public class Player {
 
-		@Id @GeneratedValue(strategy = GenerationType.AUTO) Long id,
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private final Long id;
 
-		String firstName,
+	private final String firstName;
 
-		String lastName,
+	private final String lastName;
 
-		@Column(unique = true, nullable = false) String email,
+	@Column(unique = true, nullable = false)
+	private final String email;
 
-		@ManyToOne Team team
-) {
+	@ManyToOne
+	private final Team team;
 
-	static Player init(PlayerRequestModel playerModel) {
-		return new Player(null, playerModel.firstName(), playerModel.lastName(), playerModel.email(), null);
+	Player(Long id, String firstName, String lastName, String email, Team team) {
+		super();
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.team = team;
 	}
 
 	Player update(PlayerRequestModel playerRequestModel) {
@@ -35,4 +43,25 @@ record Player(
 	Player assignTo(Team team) {
 		return new Player(this.id, this.firstName, this.lastName, this.email, team);
 	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public Team getTeam() {
+		return team;
+	}
+
 }

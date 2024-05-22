@@ -1,17 +1,13 @@
 package dev.bc.sas.web;
 
-import java.util.Map;
-
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 import dev.bc.sas.domain.Team;
 import dev.bc.sas.domain.TeamService;
@@ -28,29 +24,24 @@ class TeamController {
 	}
 
 	@GetMapping
-	ModelAndView teamList() {
+	String teamList(Model model) {
 		var teams = teamService.getAllTeams();
-		return new ModelAndView("teams", Map.of("teams", teams));
+		model.addAttribute("teams", teams);
+		return "teams";
 	}
 
 	@GetMapping("/${teamId}")
 	@PreAuthorize("hasPermission(#teamId, 'team', 'read')")
-	ModelAndView team(@PathVariable Long teamId) {
+	String team(@PathVariable Long teamId, Model model) {
 		var team = teamService.getTeam(teamId).get();
-		return new ModelAndView("team", Map.of("team", team));
+		model.addAttribute("team", team);
+		return "team";
 	}
 
 	@PostMapping
 	@PreAuthorize("hasAuthority('DIRECTOR')")
-	String createTeam(@Valid TeamRequestModel team, BindingResult bindingResult) {
-		teamService.createTeam(team.name());
+	String saveTeam(@Valid TeamRequestModel team, BindingResult bindingResult) {
+		teamService.saveTeam(new Team(team.teamId(), team.name()));
 		return "redirect:/teams";
-	}
-
-	@PutMapping("/${teamId}")
-	@PreAuthorize("hasAuthority('DIRECTOR')")
-	ModelAndView updateTeam(@PathVariable Long teamId, @ModelAttribute TeamRequestModel team) {
-		teamService.updateTeam(new Team(teamId, team.name()));
-		return teamList();
 	}
 }

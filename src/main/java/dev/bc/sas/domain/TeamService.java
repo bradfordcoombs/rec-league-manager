@@ -8,9 +8,5 @@ public interface TeamService {
 
 	Optional<Team> getTeam(Long id);
 
-	Optional<Team> getTeamForCoach(Long coachId);
-
-	Team createTeam(String name);
-
-	Team updateTeam(Team team);
+	Team saveTeam(Team team);
 }

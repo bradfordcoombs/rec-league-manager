@@ -48,8 +48,8 @@ public class TeamControllerTest {
 	}
 
 	@Test
-	@WithMockUser(username = "coach@test.com", authorities = { "COACH" })
-	void coachDeniedAccess() throws Exception {
+	@WithMockUser(username = "player@test.com", authorities = { "PLAYER" })
+	void playerDeniedAccess() throws Exception {
 		this.mockMvc.perform(post("/teams").with(csrf())).andExpect(status().is(403));
 	}
 

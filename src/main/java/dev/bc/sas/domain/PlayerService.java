@@ -9,13 +9,11 @@ public interface PlayerService {
 
 	Optional<Player> getPlayer(Long id);
 
+	Optional<Player> getPlayerByEmail(String email);
+
 	List<Player> getPlayers(List<Long> playerIds);
 
 	List<Player> getPlayersOnTeam(Long teamId);
 
-	Player createPlayer(PlayerRequestModel playerModel);
-
-	Player updatePlayer(Long id, PlayerRequestModel playerModel);
-
-	void savePlayers(List<Player> players);
+	Player savePlayer(PlayerRequestModel playerModel);
 }
