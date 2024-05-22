@@ -10,7 +10,7 @@ import jakarta.persistence.Id;
 public class Team {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private final Long id;
 
 	@Column(nullable = false)
@@ -19,6 +19,11 @@ public class Team {
 	public Team(Long id, String name) {
 		this.id = id;
 		this.name = name;
+	}
+
+	@SuppressWarnings("unused")
+	private Team() {
+		this(null, null);
 	}
 
 	public Long getId() {

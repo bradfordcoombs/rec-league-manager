@@ -6,6 +6,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,7 +35,7 @@ class PlayerController {
 
 	@GetMapping("/{playerId}")
 	@PreAuthorize("hasPermission(#playerId, 'player', 'read')")
-	String getPlayer(@PathVariable Long playerId, Model model) {
+	String getPlayer(@PathVariable("playerId") Long playerId, Model model) {
 		var player = playerService.getPlayer(playerId).get();
 		var teams = teamService.getAllTeams();
 		model.addAttribute("player", player);
@@ -44,8 +45,8 @@ class PlayerController {
 
 
 	@PostMapping
-	@PreAuthorize("hasPermission(#playerId, 'player', 'write')")
-	String savePlayer(@Valid PlayerRequestModel player) {
+	@PreAuthorize("hasPermission(#player, 'write')")
+	String savePlayer(@Valid @ModelAttribute("player") PlayerRequestModel player) {
 		playerService.savePlayer(player);
 		return "redirect:/players";
 	}

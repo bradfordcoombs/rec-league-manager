@@ -1,15 +1,20 @@
 <!DOCTYPE html>
 
 <html xmlns:th="http://www.thymeleaf.org">
-<title th:text="${player.firstName} ${player.lastName}">Player</title>
+<title th:text="${team.lastName}">Player</title>
 <body>
 	<div th:if="${canEdit}">
-		<form>
-		
+		<form action="#" th:action="@{/teams}" th:object="${team}"
+			method="post">
+			<p>
+				Id: <input type="hidden" th:field="*{id}" />
+			</p>
+
+			<p>
+				<input type="submit" value="Submit" />
+			</p>
 		</form>
 	</div>
-	<div th:if="${!canEdit">
-		
-	</div>
+	<div th:if="${!canEdit"></div>
 </body>
 </html>

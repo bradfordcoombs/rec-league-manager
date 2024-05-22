@@ -12,7 +12,7 @@ import jakarta.persistence.ManyToOne;
 public class Player {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private final Long id;
 
 	private final String firstName;
@@ -26,12 +26,16 @@ public class Player {
 	private final Team team;
 
 	Player(Long id, String firstName, String lastName, String email, Team team) {
-		super();
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.team = team;
+	}
+
+	@SuppressWarnings("unused")
+	private Player() {
+		this(null, null, null, null, null);
 	}
 
 	Player update(PlayerRequestModel playerRequestModel) {

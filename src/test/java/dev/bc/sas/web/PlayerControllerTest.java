@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -22,6 +23,7 @@ import dev.bc.sas.ApplicationConfig;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = { ApplicationConfig.class })
 @WebAppConfiguration
+@Sql("classpath:/data/data.sql")
 public class PlayerControllerTest {
 
 	@Autowired
@@ -39,5 +41,11 @@ public class PlayerControllerTest {
 	@WithMockUser(username = "director@test.com", authorities = { "DIRECTOR" })
 	void retrievePlayersView() throws Exception {
 		this.mockMvc.perform(get("/players")).andDo(print()).andExpect(view().name("players"));
+	}
+
+	@Test
+	@WithMockUser(username = "director@test.com", authorities = { "DIRECTOR" })
+	void retrievePlayerView() throws Exception {
+		this.mockMvc.perform(get("/players/{playerId}", "1")).andDo(print()).andExpect(view().name("player"));
 	}
 }

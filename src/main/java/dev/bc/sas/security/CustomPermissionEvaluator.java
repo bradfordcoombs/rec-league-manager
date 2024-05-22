@@ -30,6 +30,6 @@ class CustomPermissionEvaluator implements PermissionEvaluator {
 	public boolean hasPermission(Authentication authentication, Serializable targetId, @NonNull String targetType,
 			@NonNull Object permission) {
 		var evaluator = evaluators.get(targetType.toLowerCase());
-		return evaluator != null && evaluator.hasPermission(authentication, targetType, permission);
+		return evaluator != null && evaluator.hasPermission(authentication, targetId, targetType, permission);
 	}
 }
