@@ -12,6 +12,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -23,7 +24,7 @@ import dev.bc.sas.ApplicationConfig;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = { ApplicationConfig.class })
 @WebAppConfiguration
-@Sql("classpath:/data/data.sql")
+@Sql(scripts = "classpath:/data/data.sql", executionPhase = ExecutionPhase.BEFORE_TEST_CLASS)
 public class PlayerControllerTest {
 
 	@Autowired
