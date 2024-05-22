@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<title>Team</title>
+<body>
+	<table>
+		<thead>
+			<tr>
+				<th>Team Name</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:if="${team.empty}">
+				<td colspan="1">No Teams</td>
+			</tr>
+			<tr th:each="team : ${teams}">
+				<td><a href="team" th:ref="@{/teams/${team.id}}"><span
+						th:text="${team.name}"> Name </span></a></td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

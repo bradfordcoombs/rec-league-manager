@@ -1,6 +1,31 @@
-<html>
-	<title>Players</title>
-	<body>
-		
-	</body>
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<title>Players</title>
+<body>
+	<table>
+		<thead>
+			<tr>
+				<th>First Name</th>
+				<th>Last Name</th>
+				<th>E-Mail</th>
+				<th>Team</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:if="${players.empty}">
+				<td colspan="4">No Players</td>
+			</tr>
+			<tr th:each="player : ${players}">
+				<td><a href="player" th:ref="@{/players/${player.id}}"><span
+						th:text="${player.firstName}"> First Name </span></a></td>
+				<td><span th:text="${player.lastName}"> Last Name </span></td>
+				<td><span th:text="${player.phone}"> Phone </span></td>
+				<td><span th:text="${player.email}"> Email </span></td>
+				<td><a href="team" th:ref="@{/teams/${player.team?.id}}"><span
+						th:text="${player.team?.name}"> Team Name </span></a></td>
+			</tr>
+		</tbody>
+	</table>
+</body>
 </html>
