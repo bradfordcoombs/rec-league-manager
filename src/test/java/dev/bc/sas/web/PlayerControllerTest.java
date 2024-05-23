@@ -2,6 +2,7 @@ package dev.bc.sas.web;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -46,7 +47,19 @@ public class PlayerControllerTest {
 
 	@Test
 	@WithMockUser(username = "director@test.com", authorities = { "DIRECTOR" })
-	void retrievePlayerView() throws Exception {
+	void retrievePlayerViewForDirector() throws Exception {
 		this.mockMvc.perform(get("/players/{playerId}", "1")).andDo(print()).andExpect(view().name("player"));
+	}
+
+	@Test
+	@WithMockUser(username = "lamelo@hornets.com", authorities = { "PLAYER" })
+	void retrievePlayerViewForSelf() throws Exception {
+		this.mockMvc.perform(get("/players/{playerId}", "1")).andDo(print()).andExpect(view().name("player"));
+	}
+
+	@Test
+	@WithMockUser(username = "player@test.com", authorities = { "PLAYER" })
+	void retrievePlayerViewForOther() throws Exception {
+		this.mockMvc.perform(get("/players/{playerId}", "1")).andDo(print()).andExpect(status().is4xxClientError());
 	}
 }
