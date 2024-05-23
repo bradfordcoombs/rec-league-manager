@@ -35,9 +35,9 @@ class TeamController {
 		return "teams";
 	}
 
-	@GetMapping("/${teamId}")
+	@GetMapping("/{teamId}")
 	@PreAuthorize("hasPermission(#teamId, 'team', 'read')")
-	String team(@AuthenticationPrincipal Authentication authentication, @PathVariable Long teamId,
+	String team(@AuthenticationPrincipal Authentication authentication, @PathVariable("teamId") Long teamId,
 			Model model) {
 		var team = teamService.getTeam(teamId).get();
 		var login = (UserDetails) authentication.getPrincipal();
