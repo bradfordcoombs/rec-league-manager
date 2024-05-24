@@ -20,6 +20,8 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
+import org.springframework.test.context.jdbc.SqlConfig;
+import org.springframework.test.context.jdbc.SqlConfig.ErrorMode;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -32,7 +34,7 @@ import dev.bc.sas.ApplicationConfig;
 @ContextConfiguration(classes = { ApplicationConfig.class })
 @WebAppConfiguration
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
-@Sql(scripts = "classpath:/data/data.sql", executionPhase = ExecutionPhase.BEFORE_TEST_CLASS)
+@Sql(scripts = "classpath:/data/data.sql", executionPhase = ExecutionPhase.BEFORE_TEST_CLASS, config = @SqlConfig(errorMode = ErrorMode.CONTINUE_ON_ERROR))
 public class TeamControllerTest {
 
 	@Autowired

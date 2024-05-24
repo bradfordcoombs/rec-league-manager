@@ -42,4 +42,9 @@ class PlayerManager implements PlayerService {
 		return playerRepository.findOneByEmail(email);
 	}
 
+	@Override
+	public List<Player> getAllPlayers() {
+		return playerRepository.findAll();
+	}
+
 }

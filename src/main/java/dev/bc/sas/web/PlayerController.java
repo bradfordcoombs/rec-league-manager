@@ -1,7 +1,5 @@
 package dev.bc.sas.web;
 
-import java.util.Collections;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -34,7 +32,8 @@ class PlayerController {
 	@GetMapping
 	String allPlayers(Model model) {
 		logger.info("Getting all players");
-		model.addAttribute("players", Collections.emptyList());
+		var players = playerService.getAllPlayers();
+		model.addAttribute("players", players);
 		return "players";
 	}
 

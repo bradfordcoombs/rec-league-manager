@@ -11,6 +11,8 @@ public interface PlayerService {
 
 	Optional<Player> getPlayerByEmail(String email);
 
+	List<Player> getAllPlayers();
+
 	List<Player> getPlayers(List<Long> playerIds);
 
 	List<Player> getPlayersOnTeam(Long teamId);

@@ -20,7 +20,6 @@
 				<td><a href="player" th:ref="@{/players/${player.id}}"><span
 						th:text="${player.firstName}"> First Name </span></a></td>
 				<td><span th:text="${player.lastName}"> Last Name </span></td>
-				<td><span th:text="${player.phone}"> Phone </span></td>
 				<td><span th:text="${player.email}"> Email </span></td>
 				<td><a href="team" th:ref="@{/teams/${player.team?.id}}"><span
 						th:text="${player.team?.name}"> Team Name </span></a></td>
