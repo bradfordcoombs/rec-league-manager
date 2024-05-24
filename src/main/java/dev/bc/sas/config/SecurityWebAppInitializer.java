@@ -8,11 +8,11 @@ import org.springframework.security.web.context.AbstractSecurityWebApplicationIn
 import dev.bc.sas.ApplicationConfig;
 import jakarta.servlet.ServletContext;
 
-class BasicWebAppInitializer extends AbstractSecurityWebApplicationInitializer {
+class SecurityWebAppInitializer extends AbstractSecurityWebApplicationInitializer {
 
-	private static final Logger logger = LoggerFactory.getLogger(BasicWebAppInitializer.class);
+	private static final Logger logger = LoggerFactory.getLogger(SecurityWebAppInitializer.class);
 
-	public BasicWebAppInitializer() {
+	public SecurityWebAppInitializer() {
 		super(ApplicationConfig.class);
 	}
 

@@ -1,17 +1,19 @@
 package dev.bc.sas.config;
 
-import java.sql.SQLException;
 import java.util.Properties;
 
 import javax.sql.DataSource;
 
-import org.h2.tools.Server;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
+import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -25,11 +27,6 @@ import jakarta.persistence.EntityManagerFactory;
 @EnableJpaRepositories("dev.bc.sas")
 @EnableTransactionManagement
 class DataConfig {
-
-	@Bean(initMethod = "start", destroyMethod = "stop")
-	Server h2Server() throws SQLException {
-		return Server.createWebServer();
-	}
 
 	@Bean
 	DataSource dataSource() {
@@ -69,5 +66,18 @@ class DataConfig {
 		Properties properties = new Properties();
 		properties.setProperty("hibernate.hbm2ddl.auto", "create-drop");
 		return properties;
+	}
+
+	@Bean
+	InitializingBean dataInit() {
+		return () -> DatabasePopulatorUtils.execute(databasePopulator(), dataSource());
+	}
+
+	@Bean
+	ResourceDatabasePopulator databasePopulator() {
+		ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
+		populator.setSqlScriptEncoding("UTF-8");
+		populator.addScript(new ClassPathResource("data/data.sql"));
+		return populator;
 	}
 }

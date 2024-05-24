@@ -32,9 +32,8 @@ class SecurityConfig {
 				.authorizeHttpRequests(
 						authorize -> authorize.requestMatchers("/console/**").permitAll().anyRequest().authenticated())
 				.csrf(csfr -> csfr.ignoringRequestMatchers("/console/**"))
-				.formLogin(form -> form.defaultSuccessUrl("/teams"))
-				.userDetailsService(userDetailsService)
-				.build();
+				.formLogin(form -> form.defaultSuccessUrl("/teams")).logout((logout) -> logout.permitAll())
+				.userDetailsService(userDetailsService).build();
 	}
 
 	@Bean

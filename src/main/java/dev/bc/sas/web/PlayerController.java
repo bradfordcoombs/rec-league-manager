@@ -2,6 +2,8 @@ package dev.bc.sas.web;
 
 import java.util.Collections;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +21,8 @@ import jakarta.validation.Valid;
 @RequestMapping("/players")
 class PlayerController {
 
+	private static final Logger logger = LoggerFactory.getLogger(PlayerController.class);
+
 	private final PlayerService playerService;
 	private final TeamService teamService;
 
@@ -29,6 +33,7 @@ class PlayerController {
 
 	@GetMapping
 	String allPlayers(Model model) {
+		logger.info("Getting all players");
 		model.addAttribute("players", Collections.emptyList());
 		return "players";
 	}
