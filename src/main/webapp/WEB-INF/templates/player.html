@@ -3,5 +3,21 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <title th:text="${player.firstName + ' ' + player.lastName}">Player</title>
 <body>
+<form action="#" th:action="@{/players}" th:object="${player}"
+			method="post">
+			<input type="hidden" th:field="*{id}" />
+			<p>First Name: <input type="text" th:field="*{firstName}" /></p>
+			<p>Last Name: <input type="text" th:field="*{lastName}" /></p>
+			<p>Email: <input type="text" th:field="*{email}" /></p>
+			<p>Team: 
+				<select th:field="*{team.id}">
+					<option th:each="team : ${teams}" th:value="${team.id}" th:text="${team.name}"></option>
+				</select>
+			</p>
+
+			<p>
+				<input type="submit" value="Submit" />
+			</p>
+		</form>
 </body>
 </html>
